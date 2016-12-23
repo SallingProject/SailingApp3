@@ -27,10 +27,10 @@ public class SceneSetup : SceneBase {
 
        
         // 画面の回転する向きを固定
-        Screen.autorotateToPortrait             = true;   // 縦
-        Screen.autorotateToPortraitUpsideDown   = true;   // 上下逆
-        Screen.autorotateToLandscapeLeft        = false;  // 左
-        Screen.autorotateToLandscapeRight       = false;  // 右
+        Screen.autorotateToPortrait             = false; // 縦
+        Screen.autorotateToPortraitUpsideDown   = false; // 上下逆
+        Screen.autorotateToLandscapeLeft        = true;  // 左
+        Screen.autorotateToLandscapeRight       = true;  // 右
     }
     
     protected override void Start()
