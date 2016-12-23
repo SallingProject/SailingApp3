@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: c2d5cd29690b3e341b5a9a316865ec8b
+timeCreated: 1476796057
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - m_sceneManagerPrefabs: {fileID: 114000013527084192, guid: d4d26369cd94b454880ba00867d9130e,
+      type: 2}
+  - m_updaterPrefbs: {fileID: 114000012357913384, guid: 4fc5a94d06d08fc4ba8823bea9abb204,
+      type: 2}
+  - m_staticCanvasPrefabs: {fileID: 1000011048455172, guid: 5bc8f88876edf2a4d8a5975aa5b59e44,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
