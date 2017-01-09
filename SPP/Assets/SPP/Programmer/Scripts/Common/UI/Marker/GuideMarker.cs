@@ -3,7 +3,7 @@
 ***************************************************************************************
 @brief      ポイントマーカーの管理クラス
 ***************************************************************************************
-@author     Ko Hashimoto
+@author     Ko Hashimoto and Hiroto Morikawa
 ***************************************************************************************
 * Copyright © 2016 Ko Hashimoto All Rights Reserved.
 ***************************************************************************************/
@@ -13,34 +13,28 @@ using System.Collections;
 /**************************************************************************************
 @brief  ターゲットマーカーの管理クラス  
 */
-public class TargetMarker : BaseObject {
-
-    /**************************************************************************************
-    @brief  ターゲットマーカーのUIクラス  
-    */
-    [System.Serializable]
-    class CanvasUI
-    {
-        public RectTransform _right;
-        public RectTransform _left;
-    }
-
-    [SerializeField]
-    private GameObject m_ship;
-    // キャンバスに表示するマーカーすべての親
-    [SerializeField]
-    private RectTransform m_canvasMarkRoot;
-
-    [SerializeField]
-    private CanvasUI m_canvasMark;
+public class GuideMarker : BaseObject
+{
 
     // Spriteのマーカー
     [SerializeField]
     private GameObject m_spriteMark;
-    
+
+    [SerializeField]
+    private GameObject m_ship;
+
     // スプライトのオフセット
     [SerializeField]
     private Vector3 m_spriteOffset = Vector3.zero;
+
+    // 船の座標値
+    private Vector3 m_shipPosition;
+
+    // 目的地の座標値
+    private Vector3 m_targetPosition;
+
+    // マーカーの角度を格納する変数
+    private float m_markerAngle;
 
     // 次のポイント
     // 検証用にSerializeしているが
@@ -48,6 +42,7 @@ public class TargetMarker : BaseObject {
 #if UNITY_EDITOR
     [SerializeField]
 #endif
+
     // カメラに映っているかのコンポーネント
     private ReflectedOnCamera m_target;
 
@@ -57,33 +52,25 @@ public class TargetMarker : BaseObject {
         base.mOnRegistered();
     }
 
-
-    // なんかちらつくからその対策用
-    //　実際の使用用途で消せるかも
-    int m_updateCount = 0;
     /**************************************************************************************
     @brief  更新処理
     */
     public override void mOnUpdate()
     {
-        // なんかちらつくから最初の2回は無視
-        if(m_updateCount < 2)
-        {
-            m_updateCount += 1;
-            return;
-        }
+        // ターゲットがnullなら処理を飛ばす
         if (m_target == null) return;
+
         base.mOnUpdate();
+
         mSetSpriteMarkActive(m_target.mIsOnView);
         if (m_target.mIsOnView)
         {
             Vector3 position = m_target.transform.position;
             m_spriteMark.transform.position = position + m_spriteOffset;
         }
-        else
-        {
-            mSetCanvasMarkActive(m_target.transform.position, m_ship.transform.position);
-        }
+
+        mSetTargetPosition();
+
 #if UNITY_EDITOR
         m_target.mUpdate();
 #endif
@@ -98,41 +85,47 @@ public class TargetMarker : BaseObject {
     }
 
     /**************************************************************************************
-    @brief  ターゲットとカメラの位置関係からどのオブジェクトのアクティブをオンにするか決める
-    */
-    private void mSetCanvasMarkActive(Vector3 target, Vector3 ship)
-    {
-        Vector3 diff = target - m_ship.transform.position;
-        Matrix4x4 mat = Camera.main.worldToCameraMatrix;
-        diff = mat * diff;
-
-
-        // Vector3 diff = target - ship;
-        // //Debug.Log(diff.x);
-        //// Debug.Log(diff.x * m_ship.transform.forward.x);
-        //bool isRight = (diff.x  > 0 || diff.x * m_ship.transform.forward.x > 0 );
-        bool isRight = (diff.x > 0);
-        m_canvasMark._right.SetActive(isRight);
-         m_canvasMark._left.SetActive(!isRight);
-
-
-    }
-
-    /**************************************************************************************
     @brief  マーカーオブジェクトのアクティブ設定
     @note   true時はSpriteのActiveがtrueになって、frontはfalseになる
     */
     private void mSetSpriteMarkActive(bool isSpriteActive)
     {
         m_spriteMark.SetActive(isSpriteActive);
-        
-        if (isSpriteActive)
-        {
-            m_canvasMark._right.SetActive(false);
-            m_canvasMark._left.SetActive(false);
-        }
+    }
 
-        m_canvasMarkRoot.SetActive(!isSpriteActive);
+    /**************************************************************************************
+    @brief マーカーの表示位置と向きを目的地に向けて設定
+    */
+    private void mSetTargetPosition()
+    {
+        //// 座標地を取得
+        //Vector3 ship = m_ship.transform.position;
+        //Vector3 target = m_target.transform.position;
+        //Vector3 guide = this.transform.eulerAngles;
 
+        //// 座標値から角度を測定
+        //float dx = target.x - ship.x;
+        //float dy = target.y - ship.y;
+
+        //float radian = Mathf.Atan2(dx, dy);
+        //float angle = (radian * 180f / Mathf.PI) % 360f;
+
+        //// 画像を角度に合わせて回転
+        //this.transform.Rotate(new Vector2(0f, angle));
+
+        // 目的地の座標値を取得
+        m_targetPosition = m_target.transform.position;
+
+        // 船の座標値を取得
+        m_shipPosition = m_ship.transform.position;
+
+        // マーカーの座標値を船の座標値と同じにする
+        this.transform.position = m_shipPosition;
+
+        // 目的地へマーカーを向かせる
+        this.transform.LookAt(m_targetPosition);
+
+        // マーカーを立ててある状態から寝かせる
+        this.transform.Rotate(new Vector3(1, 0, 0), 90);
     }
 }

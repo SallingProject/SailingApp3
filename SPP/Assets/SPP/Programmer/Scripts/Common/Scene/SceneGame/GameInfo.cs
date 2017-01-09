@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameInfo : BaseObjectSingleton<GameInfo>{
 
     [SerializeField]
-    public TargetMarker m_targetMarker;
+    public GuideMarker m_targetMarker;
     [SerializeField]
     private UIHandleController m_handleController;
     [SerializeField]
