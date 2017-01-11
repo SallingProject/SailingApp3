@@ -56,7 +56,7 @@ public class ShipMove : BaseObject
     }
 
     //定数
-    private const float mkFriction = 0.989f;              //摩擦
+    private const float mkFriction = 0.995f;              //摩擦
     private const float mkNormalMagnification = 1.0f;
     private const float mkAirDensity = 1.2f;
     
@@ -196,7 +196,17 @@ public class ShipMove : BaseObject
 
             }
         }
-        float sailFlagment = m_sail.transform.eulerAngles.y - m_wind.mWindDirection;
+        if (Mathf.Abs(shipFlagment) > m_cl.m_direction_max / 2)
+        {
+            
+            m_sail.mRotateSail(-(shipFlagment - m_cl.m_direction_max * (shipFlagment > 0 ? 1 : -1) / 2));
+        }
+        else{
+            m_sail.mRotateSail(-(shipFlagment / 2));
+        }
+
+
+            float sailFlagment = m_sail.transform.eulerAngles.y - m_wind.mWindDirection;
         if (Mathf.Abs(sailFlagment) > 180){
             if (sailFlagment < 0)
             {
@@ -230,7 +240,7 @@ public class ShipMove : BaseObject
         float cl = m_cl.m_curve.Evaluate(diff);
                 //Debug.Log("CL" + cl);
 
-        float LiftForce = (m_wind.mWindForce * cl * mkAirDensity) / 2;
+        float LiftForce = (m_wind.mWindForce * cl * mkAirDensity) / 3;
         //        Debug.Log("LiftForce" + LiftForce);
 
         return LiftForce;

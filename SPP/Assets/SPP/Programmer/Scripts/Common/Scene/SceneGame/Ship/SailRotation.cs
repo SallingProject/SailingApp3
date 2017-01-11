@@ -7,27 +7,19 @@
 ***************************************************************************************/
 using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class SailRotation : BaseObject{
-    [SerializeField]
-    private bool debugMode = false;
-    public override void mOnUpdate()
+    protected override void mOnRegistered()
     {
-
-#if UNITY_EDITOR
-        if (Input.GetKey(KeyCode.J)){
-            transform.localEulerAngles += Vector3.up;
-        }
-        else if (Input.GetKey(KeyCode.K)){
-            transform.localEulerAngles -= Vector3.up;
-        }
-        if (!debugMode)
-#endif
-        {
-            transform.localEulerAngles = new Vector3(0, GameInfo.mInstance.mGetSailRotation(), 0);
-        }
-
-
+        mUnregisterList(this);
     }
+
+    public void mRotateSail(float rote)
+    {
+        rote = Mathf.Clamp(rote, -90, 90);
+        transform.DOLocalRotate(new Vector3(0, rote, 0), 2.0f);
+    }
+
 
 }
