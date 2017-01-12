@@ -37,7 +37,7 @@ public class ShipMove : BaseObject
     private WindObject m_wind;
 
     private float m_speedVector;
-    private float m_surfacingRadian;
+    //private float m_surfacingRadian;
 
     private ShipDefine m_shipDefine;
     private float m_accelMagnification;
@@ -46,7 +46,14 @@ public class ShipMove : BaseObject
     public SailRotation m_sail;
     private RudderRotation m_rudder;
 
-
+    /****************************************************************************** 
+    @brief      減速フラグ
+    @note       
+    *******************************************************************************/
+    public bool mIsDeceleration
+    {
+        get; set;
+    }
     /****************************************************************************** 
     @brief      船に発生した加速度
     */
@@ -56,7 +63,7 @@ public class ShipMove : BaseObject
     }
 
     //定数
-    private const float mkFriction = 0.995f;              //摩擦
+    private const float mkFriction = 0.992f;              //摩擦
     private const float mkNormalMagnification = 1.0f;
     private const float mkAirDensity = 1.2f;
     
@@ -68,8 +75,9 @@ public class ShipMove : BaseObject
 
     public void mInitialize()
     {
+        mIsDeceleration = false;
         m_speedVector = 0;
-        m_surfacingRadian = 0;
+//        m_surfacingRadian = 0;
         m_wind = GameInfo.mInstance.m_wind;
         mNormalAccel();
 
@@ -82,16 +90,23 @@ public class ShipMove : BaseObject
 
     public override void mOnUpdate()
     {
-        ///*Test Code
+        /*Test Code
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            mItemActivate(ItemEffect.Boost);
+            mIsDeceleration = !mIsDeceleration;
         }
         //*/
 
 
-        //Move
-        mAcceleration();
+        //Move(減速フラグが立っていたら加速しない)
+        if (mIsDeceleration)
+        {
+            mDeceleration();
+        }
+        else
+        {
+            mAcceleration();
+        }
         if (m_speedVector >= m_wind.mWindForce * (m_shipDefine.mMaxSpeed / 100) * m_accelMagnification)
         {
             m_speedVector = m_wind.mWindForce * (m_shipDefine.mMaxSpeed / 100) * m_accelMagnification;
@@ -103,6 +118,36 @@ public class ShipMove : BaseObject
         ////FloatMove;
         //m_surfacingRadian += Time.deltaTime * 120;
         //transform.position = new Vector3(transform.position.x, Mathf.Sin(m_surfacingRadian / 180 * 3.14f) / 8, transform.position.z);
+    }
+
+    /****************************************************************************** 
+    @brief      減速状態
+    @note       
+    *******************************************************************************/
+    private void mDeceleration()
+    {
+        float shipFlagment = transform.eulerAngles.y - m_wind.mWindDirection;
+        if (Mathf.Abs(shipFlagment) > 180)
+        {
+            if (shipFlagment < 0)
+            {
+                shipFlagment = 360 + shipFlagment;
+            }
+            else
+            {
+                shipFlagment = shipFlagment - 360;
+
+            }
+        }
+        if (Mathf.Abs(shipFlagment) >= 90)
+        {
+
+            m_sail.mRotateSail(shipFlagment > 0 ? 180 - shipFlagment : -(shipFlagment + 180));
+        }
+        else
+        {
+            m_sail.mRotateSail(90 *(shipFlagment > 0 ? 1 : -1));
+        }
     }
 
     /****************************************************************************** 
