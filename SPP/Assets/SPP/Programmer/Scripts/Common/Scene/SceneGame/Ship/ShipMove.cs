@@ -46,6 +46,15 @@ public class ShipMove : BaseObject
     public SailRotation m_sail;
     private RudderRotation m_rudder;
 
+    private float m_maxSpeed;
+    public float mMaxSpeed
+    {
+        get { return m_maxSpeed; } private set { m_speedVector = value; }
+    }
+    public float mSpeedVector
+    {
+        get { return m_speedVector; } private set { m_speedVector = value; }
+    }
     /****************************************************************************** 
     @brief      減速フラグ
     @note       
@@ -107,9 +116,11 @@ public class ShipMove : BaseObject
         {
             mAcceleration();
         }
-        if (m_speedVector >= m_wind.mWindForce * (m_shipDefine.mMaxSpeed / 100) * m_accelMagnification)
+
+        m_maxSpeed = m_wind.mWindForce * (m_shipDefine.mMaxSpeed / 100);
+        if (m_speedVector >= m_maxSpeed * m_accelMagnification)
         {
-            m_speedVector = m_wind.mWindForce * (m_shipDefine.mMaxSpeed / 100) * m_accelMagnification;
+            m_speedVector = m_maxSpeed * m_accelMagnification;
         }
 
         m_speedVector *= mkFriction;
