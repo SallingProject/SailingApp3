@@ -103,7 +103,7 @@ public class Point : BaseObject{
             receive.transform.localScale = new Vector3(4, mk_scaleY, m_radius*1.5f);
             receive.transform.Rotate(0, buoy.m_angle, 0);
             receive.transform.localPosition = Vector3.zero;
-            receive.transform.Translate(0, 0, m_radius-1);
+            receive.transform.Translate(0, 0, (m_radius+5)*1.5f);
         }
         receive.transform.name = buoy.m_name;
         receive.GetComponent<CollisionDetection>().mDirection = (int)buoy.m_direction;

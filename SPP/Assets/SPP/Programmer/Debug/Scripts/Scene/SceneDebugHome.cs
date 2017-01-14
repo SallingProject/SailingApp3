@@ -102,4 +102,9 @@ public class SceneDebugHome : SceneBase {
         GameInstance.mInstance.mSceneLoad(new LoadInfo("Endurance", LoadInfo.ELoadType.Async, 1f));
     }
 
+    public void mGoToScene(string key)
+    {
+        GameInstance.mInstance.mSceneLoad(new LoadInfo(key, LoadInfo.ELoadType.Async, 1f));
+    }
+
 }
