@@ -49,11 +49,11 @@ public class ShipMove : BaseObject
     private float m_maxSpeed;
     public float mMaxSpeed
     {
-        get { return m_maxSpeed; } private set { m_speedVector = value; }
+        get { return m_maxSpeed; }
     }
     public float mSpeedVector
     {
-        get { return m_speedVector; } private set { m_speedVector = value; }
+        get { return m_speedVector; }
     }
     /****************************************************************************** 
     @brief      減速フラグ
@@ -99,6 +99,7 @@ public class ShipMove : BaseObject
 
     public override void mOnUpdate()
     {
+        mIsDeceleration = GameInfo.mInstance.mDeceleration.mIsPress;
         /*Test Code
         if (Input.GetKeyDown(KeyCode.Q))
         {

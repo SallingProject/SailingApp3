@@ -19,6 +19,12 @@ public class GameInfo : BaseObjectSingleton<GameInfo>{
 
     [SerializeField]
     public WindObject m_wind;       //風オブジェクト
+    [SerializeField]
+    private LongPressButton m_deceleration;     //減速ボタン
+    public LongPressButton mDeceleration
+    {
+        get { return m_deceleration; }
+    }
 
     [SerializeField]
     private InductionRing m_inductionRing;
