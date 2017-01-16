@@ -7,9 +7,12 @@ public class GameInfo : BaseObjectSingleton<GameInfo>{
     [SerializeField]
     public GuideMarker m_targetMarker;
     [SerializeField]
-    private UIHandleController m_handleController;
-    [SerializeField]
-    private UISailController m_sailController;
+    private UIButtonController m_buttonController;
+    public UIButtonController mButtonController
+    {
+        get { return m_buttonController; }
+    }
+
     [SerializeField]
     private UIUserAction m_userAction;
     public UIUserAction UserAction
@@ -56,28 +59,6 @@ public class GameInfo : BaseObjectSingleton<GameInfo>{
         base.mOnRegistered();
         mIsEnd = false;
     }
-
-
-    /****************************************************************************** 
-    @brief      コントローラー回転量を取得する
-    @note       常に取得する
-    @return     回転量
-    *******************************************************************************/
-    public float mGetHandleRotation()
-    {
-            return -m_handleController.mHandleRotationZ;
-    }
-
-    /****************************************************************************** 
-    @brief      セールコントローラーの位置を取得？する
-    @note       常に取得する
-    @return     回転量
-    *******************************************************************************/
-    public float mGetSailRotation()
-    {
-        return -m_sailController.mBarProgress * 90;
-    }
-
 
     /****************************************************************************** 
     @brief      発動するアイテムを保存する。
