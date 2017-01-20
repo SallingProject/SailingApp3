@@ -97,7 +97,7 @@ public class ShipMove : BaseObject
     }
 
 
-    public override void mOnUpdate()
+    public override void mOnFixedUpdate()
     {
         mIsDeceleration = GameInfo.mInstance.mDeceleration.mIsPress;
         /*Test Code
@@ -125,7 +125,10 @@ public class ShipMove : BaseObject
         }
 
         m_speedVector *= mkFriction;
-        transform.Translate(new Vector3(0.0f, 0.0f, m_speedVector * Time.deltaTime));
+        //transform.Translate(new Vector3(0.0f, 0.0f, m_speedVector * Time.deltaTime));
+        Vector3 pos = transform.position;
+        pos += transform.forward * m_speedVector * Time.fixedDeltaTime;
+        GetComponent<Rigidbody>().MovePosition(pos);
 
         ////FloatMove;
         //m_surfacingRadian += Time.deltaTime * 120;
