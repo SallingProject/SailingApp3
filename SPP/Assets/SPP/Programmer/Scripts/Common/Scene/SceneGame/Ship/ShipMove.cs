@@ -223,7 +223,7 @@ public class ShipMove : BaseObject
     *******************************************************************************/
     private float mDragForce()
     {
-        float angle = mAngleAttack(m_wind.mWindDirection, m_sail.transform.eulerAngles.y);
+        float angle = SailMath.mAngleAttack(m_wind.mWindDirection, m_sail.transform.eulerAngles.y);
         if (angle >= 90)
         {
             angle = 180 - angle;
@@ -294,7 +294,7 @@ public class ShipMove : BaseObject
         //揚力で計算してみる
         //まず迎え角を求める
         //揚力係数を疑似カーブから引っ張る
-        float angle = mAngleAttack(m_wind.mWindDirection, m_sail.transform.eulerAngles.y);
+        float angle = SailMath.mAngleAttack(m_wind.mWindDirection, m_sail.transform.eulerAngles.y);
 
         float diff = angle / m_cl.m_direction_max;
         float cl = m_cl.m_curve.Evaluate(diff);
@@ -304,19 +304,6 @@ public class ShipMove : BaseObject
         //        Debug.Log("LiftForce" + LiftForce);
 
         return LiftForce;
-    }
-    /****************************************************************************** 
-    @brief      迎え角を計算する
-    @note       fluid   流体,0~360°    target  対象　transform.eulerAngle,
-    @return     迎え角
-    *******************************************************************************/
-    private float mAngleAttack(float fluidDirec, float targetDirec)
-    {
-        Vector2 fluidVec, targetVec;
-        fluidVec = SailMath.mDegToVector2(fluidDirec);
-        targetVec = SailMath.mDegToVector2(targetDirec);
-        //        Debug.Log("flued" + fluidVec);
-        return Mathf.Acos(Vector2.Dot(fluidVec, targetVec)) * Mathf.Rad2Deg;
     }
 
     /****************************************************************************** 

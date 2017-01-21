@@ -48,6 +48,6 @@ public class UIButtonController : BaseObject
                 mButtonState = eAround.NEUTRAL;
                 break;
         }
-        Debug.Log(mButtonState);
+//        Debug.Log(mButtonState);
     }
 }

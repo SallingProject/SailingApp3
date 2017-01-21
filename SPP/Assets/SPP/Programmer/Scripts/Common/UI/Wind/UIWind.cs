@@ -19,7 +19,7 @@ public class UIWind : BaseObject
     {
 
         base.mOnUpdate();
-        Debug.Log(m_ship.mSpeedVector / m_ship.mMaxSpeed);
+//        Debug.Log(m_ship.mSpeedVector / m_ship.mMaxSpeed);
         //m_WindDirectionの値分回転
         transform.eulerAngles = new Vector3(0, 0, m_ship.transform.eulerAngles.y - m_wind.mWindDirection);
 

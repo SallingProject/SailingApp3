@@ -28,6 +28,18 @@ public class SailMath{
     {
         return new Vector2(Mathf.Sin(value), Mathf.Cos(value));
     }
-
+    
+    /****************************************************************************** 
+    @brief      迎え角を計算する
+    @note       fluid   流体,0~360°    target  対象
+    @return     迎え角
+    *******************************************************************************/
+    public static float mAngleAttack(float fluidDirec, float targetDirec)
+    {
+        Vector2 fluidVec, targetVec;
+        fluidVec = mDegToVector2(fluidDirec);
+        targetVec = mDegToVector2(targetDirec);
+        return Mathf.Acos(Vector2.Dot(fluidVec, targetVec)) * Mathf.Rad2Deg;
+    }
 
 }
