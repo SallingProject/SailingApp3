@@ -16,7 +16,7 @@ public class RudderRotation : BaseObject
 
     public override void mOnUpdate()
     {
-        float move = 20;
+        float move = 25;
         switch (GameInfo.mInstance.mButtonController.mButtonState)
         {
             case UIButtonController.eAround.LEFT:
