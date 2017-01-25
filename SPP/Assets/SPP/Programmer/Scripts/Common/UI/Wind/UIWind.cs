@@ -23,12 +23,14 @@ public class UIWind : BaseObject
         //m_WindDirectionの値分回転
         transform.eulerAngles = new Vector3(0, 0, m_ship.transform.eulerAngles.y - m_wind.mWindDirection);
 
-
+        float diff = m_ship.transform.eulerAngles.y - m_wind.mWindDirection;
+        if(diff >= 180)
+        {
+            diff = diff - 360;
+        }
         //風向きが-25～25の値の時UIの色を赤に変える それ以外は緑
-        if (m_ship.transform.eulerAngles.y - m_wind.mWindDirection >= -25.0 &&
-           m_ship.transform.eulerAngles.y - m_wind.mWindDirection <= 25.0)
-      
-
+        if (diff >= -25.0 &&
+           diff <= 25.0)
         {
             //赤
             color = new Color(1.0F, 0.0F, 0.0F, 1.0F);
