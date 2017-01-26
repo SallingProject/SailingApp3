@@ -124,6 +124,9 @@ public class GuideMarker : BaseObject
 
         // 目的地へマーカーを向かせる
         this.transform.LookAt(m_targetPosition);
+        transform.position += transform.forward * 5;
+
+
 
         // マーカーを立ててある状態から寝かせる
         this.transform.Rotate(new Vector3(1, 0, 0), 90);
